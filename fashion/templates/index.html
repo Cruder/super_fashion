@@ -2,5 +2,12 @@
 {% load static %}
 <img src="{% static "fashion.jpg" %}" alt="My image">
 
-<p>Sélectionnez un élément de mode, nous vous dirons où le ranger.</p>
-<input type="file" id="file" name="file" accept="image/png, image/jpeg">
+<p>Sélectionnez un accessoire de mode, nous vous dirons où le ranger.</p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="upload_file" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file">
+    <input type="submit" value="Ranger">
+</form>
