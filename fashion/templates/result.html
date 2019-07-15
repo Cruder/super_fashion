@@ -1,1 +1,11 @@
-Hello
+{% load static %}
+<table>
+    <tbody>
+      {% for file in files %}
+        <tr>
+          <td><img src="{% static file.file_name %}" alt=""></td>
+          <td>{{ file.type }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
