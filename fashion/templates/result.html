@@ -1,10 +1,16 @@
 {% load static %}
 <table>
+    <thead>
+      <tr>
+        <th>Accessoire</th>
+        <th>Model 1</th>
+      </tr>
+    </thead>
     <tbody>
       {% for file in files %}
         <tr>
-          <td><img src="{% static file.file_name %}" alt=""></td>
-          <td>{{ file.type }}</td>
+          <td><img src="{% static file.file_name %}" alt="" height="56" width="56"></td>
+          <td>{{ file.get_type_display }}</td>
         </tr>
       {% endfor %}
     </tbody>

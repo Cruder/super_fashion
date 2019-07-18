@@ -17,7 +17,7 @@ def upload_file(request):
             with open('fashion/static/' + file.name, 'wb+') as destination:
                 for chunk in file.chunks():
                     destination.write(chunk)
-            FashionFile(file_name=file.name, type='anime').save()
+            FashionFile(file_name=file.name, type='2').save()
             return HttpResponseRedirect('result')
     return HttpResponseRedirect('/fashion')
 
