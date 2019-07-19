@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .forms import UploadFileForm
+import matplotlib.image as img
 from .models import FashionFile
 
 def index(request):
@@ -11,14 +11,17 @@ def index(request):
 
 def upload_file(request):
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = request.FILES['file']
-            with open('fashion/static/' + file.name, 'wb+') as destination:
-                for chunk in file.chunks():
-                    destination.write(chunk)
-            FashionFile(file_name=file.name, type='2').save()
-            return HttpResponseRedirect('result')
+        for count, x in enumerate(request.FILES.getlist("files")):
+            def process(file):
+                with open('fashion/static/' + file.name, 'wb+') as destination:
+                    for chunk in file.chunks():
+                        destination.write(chunk)
+                image = img.imread('fashion/static/' + file.name)
+                print(len(image))
+                print(image)
+                FashionFile(file_name=file.name, type='2').save()
+            process(x)
+        return HttpResponseRedirect('result')
     return HttpResponseRedirect('/fashion')
 
 

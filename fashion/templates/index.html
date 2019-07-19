@@ -8,6 +8,6 @@
 
 <form action="upload_file" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="file" name="file">
+    <input type="file" name="files" accept="image/png" multiple>
     <input type="submit" value="Ranger">
 </form>
