@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 import matplotlib.image as img
+import numpy as np
+import tensorflow as tf
+from keras.models import load_model
 from .models import FashionFile
 
 def index(request):
@@ -17,8 +20,11 @@ def upload_file(request):
                     for chunk in file.chunks():
                         destination.write(chunk)
                 image = img.imread('fashion/static/' + file.name)
-                print(len(image))
-                print(image)
+                ary = np.reshape(image, 28 * 28)
+                print(len(ary))
+                print(ary)
+                model = tf.keras.models.load_model('fashion/trained_models/mlp_1_2.h5')
+                print(model.predict(ary))
                 FashionFile(file_name=file.name, type='2').save()
             process(x)
         return HttpResponseRedirect('result')
