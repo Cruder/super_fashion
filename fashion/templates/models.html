@@ -1,0 +1,15 @@
+<h1>Super Fashion Models</h1>
+
+<ul>
+  {% for trained_model in trained_models %}
+    <li>{{trained_model.name}} - {{trained_model.file_name}}</li>
+  {% endfor %}
+</ul>
+
+
+<form action="upload_model" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file">
+    <input type="text" name="name">
+    <input type="submit" value="Ajouter un model">
+</form>

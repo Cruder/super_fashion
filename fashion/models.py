@@ -21,3 +21,7 @@ class FashionFile(models.Model):
 
     def __str__(self):
         return self.file_name + ' ' + self.type
+
+class TrainedModel(models.Model):
+    file_name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)

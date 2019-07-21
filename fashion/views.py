@@ -5,7 +5,8 @@ import matplotlib.image as img
 import numpy as np
 import tensorflow as tf
 from keras.models import load_model
-from .models import FashionFile
+from .models import FashionFile, TrainedModel
+from .forms import UploadFileForm
 
 def index(request):
     template = loader.get_template('index.html')
@@ -21,17 +22,9 @@ def upload_file(request):
                         destination.write(chunk)
                 image = img.imread('fashion/static/' + file.name)
                 ary = np.reshape(image, 28 * 28)
-                print(len(image))
-                print(len(ary))
-                print(ary)
-                print(ary.shape)
                 model = tf.keras.models.load_model('fashion/trained_models/mlp_1_2.h5')
-                print(model)
                 value = model.predict(np.array([ary]))
-                print("The value is : ")
-                print(value)
                 final_id_value = np.argmax(value[0])
-                print(final_id_value)
                 FashionFile(file_name=file.name, type=str(final_id_value)).save()
             process(x)
         return HttpResponseRedirect('result')
@@ -42,3 +35,19 @@ def result(request):
     template = loader.get_template('result.html')
     files = FashionFile.objects.all()
     return HttpResponse(template.render({'files': files}, request))
+
+def models(request):
+    template = loader.get_template('models.html')
+    trained_models = TrainedModel.objects.all()
+    return HttpResponse(template.render({'trained_models': trained_models}, request))
+
+def upload_model(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            with open('fashion/trained_models/' + file.name, 'wb+') as destination:
+                for chunk in file.chunks():
+                    destination.write(chunk)
+            TrainedModel(file_name=file.name, name=form.cleaned_data["name"]).save()
+    return HttpResponseRedirect('/fashion/models')
