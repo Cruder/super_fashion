@@ -3,14 +3,17 @@
     <thead>
       <tr>
         <th>Accessoire</th>
-        <th>Model 1</th>
       </tr>
     </thead>
     <tbody>
-      {% for file in files %}
+      {% for file_name, result in results.items %}
         <tr>
-          <td><img src="{% static file.file_name %}" alt="" height="56" width="56"></td>
-          <td>{{ file.get_type_display }}</td>
+          <td><img src="{% static file_name %}" alt="" height="56" width="56"></td>
+          {% for entities in result %}
+            <td>{% for entity in entities %}
+              {{ entity }}
+            {% endfor %}</td>
+          {% endfor %}
         </tr>
       {% endfor %}
     </tbody>
